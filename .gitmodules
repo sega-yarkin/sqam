@@ -1,0 +1,3 @@
+[submodule "src/mq2db/mongo"]
+	path = src/mq2db/mongo
+	url = https://github.com/mongodb/mongo-c-driver.git
