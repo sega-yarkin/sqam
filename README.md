@@ -1,4 +1,4 @@
-sqam
+SQAM
 ====
 
 SQUID Account Manager
