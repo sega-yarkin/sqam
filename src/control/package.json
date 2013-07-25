@@ -1,0 +1,19 @@
+{
+	"name"		: "sqam_control",
+	"description"	: "SQAM Control process",
+	"main"		: "./index.js",
+	"author"	: "Sergey I. Yarkin",
+	"version"	: "0.0.1",
+	"licenses"	: [
+		{
+			"type": "MIT",
+			"url" : "https://raw.github.com/sega-yarkin/sqam/master/LICENSE"
+		}
+	],
+	"dependencies"	: {
+		"async": ">0.2.0",
+		"connect": ">2.8.0",
+		"mongodb": ">1.3.10",
+		"mustache": ">0.7.0"
+	}
+}
