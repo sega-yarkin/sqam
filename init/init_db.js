@@ -1,5 +1,5 @@
 // Parameters
-var DBNAME = "sam";
+var DBNAME = "sqam";
 var RAWLOG_SIZE = 50; // in mebibytes
 
 // connect to server

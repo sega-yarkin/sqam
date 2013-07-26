@@ -49,5 +49,5 @@ $(TMP)/mongo/%.o: $(SRC)/mq2db/mongo/src/%.c
 #########################################
 
 clean:
-	rm -rf ./$(TMP)/*
+	rm -rf ./$(TMP)/mongo/ ./$(TMP)/*.o
 
