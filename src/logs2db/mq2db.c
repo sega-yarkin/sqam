@@ -1,3 +1,14 @@
+/**
+ * Message queue -> MongoDB utilite.
+ * Read specified message queue and puts all
+ * log messages to raw log capped collection
+ * in MongoDB.
+ *
+ * @author	Sergey Yarkin
+ * @version	0.1.0
+ */
+
+
 #include <libgen.h>
 #include <mqueue.h>
 #include <sys/time.h>
@@ -7,7 +18,7 @@
 #include "utils.h"
 
 /** Path to .lock, in which will be written PID of the daemon. */
-#define LOCKFILE	RUNDIR "/sqam_mq2db.lock"
+#define LOCKFILE	RUNDIR "/mq2db.lock"
 /** Syslog ident, if NULL used default value (basename of file). */
 #define SYSLOG_NAME	NULL
 
@@ -164,7 +175,7 @@ void pump() {
 			continue;
 		}
 		buf[ rcvd ] = '\0';
-		DEBUG( "Received new log, length = %d", (int)rcvd );
+		//DEBUG( "Received new log, length = %d", (int)rcvd );
 		
 		/* Send to MongoDB */
 		bson_init( doc );
@@ -223,7 +234,7 @@ int main( int argc, char *argv[] ) {
 	db_port = ( argc > 4 ) ? (int)strtol(argv[4], NULL, 10) : DB_PORT_DEFAULT;
 	
 	/* initialize */
-	if( lock_file(LOCKFILE, &lock) != EOK )
+	if( lock_file(LOCKFILE, &lock, 0) != EOK )
 		exit( EXIT_FAILURE );
 	if( init()!=EOK || daemonize()!=EOK )
 		exit( EXIT_FAILURE );

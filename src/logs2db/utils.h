@@ -28,16 +28,14 @@
  *
  * @param fmt		Format string
  */
-#define WARN(fmt, ...) \
-		syslog(LOG_WARNING, "%s(): " fmt, __func__, ##__VA_ARGS__);
+#define WARN(fmt, ...) syslog(LOG_WARNING, "%s(): " fmt, __func__, ##__VA_ARGS__);
 
 /**
  * Print error message.
  *
  * @param prefix	Text before error string
  */
-#define ERR(prefix) \
-		syslog(LOG_ERR, "%s(): %s: %m\n", __func__, prefix);
+#define ERR(prefix) syslog(LOG_ERR, "%s(): %s: %m\n", __func__, prefix);
 
 #ifndef USE_DEBUG
 # define DEBUG(...)
@@ -47,8 +45,7 @@
  *
  * @param fmt		Format string
  */
-# define DEBUG(fmt, ...) \
-		syslog(LOG_DEBUG, "%s(): " fmt, __func__, ##__VA_ARGS__);
+# define DEBUG(fmt, ...) syslog(LOG_DEBUG, "%s(): " fmt, __func__, ##__VA_ARGS__);
 #endif
 
 
@@ -61,13 +58,14 @@
 void redir_io( int close_stdin, char* syslog_name );
 
 /**
- * Lock file `filename'.
+ * Lock file `filename' or just create it.
  *
  * @param filename	The file which will be locked
  * @param lock		Pointer to FD
+ * @param is_pid	If great than 0 file will not lock
  * @returns		0 on success
  */
-int lock_file( char* filename, int* lock );
+int lock_file( char* filename, int* lock, int is_pid );
 
 /**
  * Write PID to lock file.

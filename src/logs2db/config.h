@@ -9,7 +9,7 @@
 /** Unprivileged user. */
 #define USER		"nobody"
 /** Local state directory (/var). */
-#define RUNDIR		"./tmp"
+#define RUNDIR		"/var/run/sqam"
 /** Null device path. */
 #define DEVNULL		"/dev/null"
 /** Delay before next attempt if error occurred. */

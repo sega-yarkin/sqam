@@ -7,13 +7,16 @@ void redir_io( int close_stdin, char* syslog_name ) {
 	openlog( syslog_name, LOG_PID | LOG_NDELAY, LOG_DAEMON );
 }
 
-int lock_file( char* filename, int* lock ) {
+int lock_file( char* filename, int* lock, int is_pid ) {
 	DEBUG( "Locking file `%s'", filename );
-	*lock = open( filename, O_RDWR|O_CREAT, 0755 );
+	int mode = 0644 + (is_pid?0:1)*0111;
+	*lock = open( filename, O_RDWR|O_CREAT, mode );
 	if( *lock == -1 ) {
 		ERR( "Cannot open lock file" );
 		return 1;
 	}
+	if( is_pid )
+		return EOK;
 	if( flock(*lock, LOCK_EX|LOCK_NB) != EOK ) {
 		WARN( "Cannot lock file, already running?" );
 		return 1;

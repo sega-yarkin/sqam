@@ -1,16 +1,28 @@
+/**
+ * SQUID -> Message queue routine.
+ * This program start as the SQUID logging helper and
+ * puts all logs from it to specified message queue.
+ *
+ * @author	Sergey Yarkin
+ * @version	0.1.0
+ */
+
 #include <libgen.h>
 #include <mqueue.h>
 
 #include "config.h"
 #include "utils.h"
 
+/** Path to PID file. */
+#define PIDFILE		RUNDIR "/squid2db.%d.pid"
 /** Syslog ident, if NULL used default value (basename of file). */
 #define SYSLOG_NAME	NULL
 
 
 char* mq_path;		/**< Message queue name */
 mqd_t mq;		/**< Message queue pointer */
-int   lock;		/**< Lock file descriptor */
+char  pid_path[256];	/**< PID file path */
+int   fpid;		/**< PID file descriptor */
 
 
 /**
@@ -38,9 +50,14 @@ void pump() {
 	/* pump loop */
 	DEBUG( "Start pumping" );
 	while( fgets(buf, sizeof buf, stdin) ) {
+		if( buf[0] != 'L' )
+			continue;
 		len = strlen( buf );
-		DEBUG( "Received new log, length = %d", len );
-		if( mq_send(mq, buf, len, 0) != EOK )
+		if( len < 3 )
+			continue;
+		buf[ len-1 ] = '\0';
+		//DEBUG( "Received new log, length = %d", len-2 );
+		if( mq_send(mq, &buf[1], len-2, 0) != EOK )
 			ERR( "Error while mq_send" );
 	}
 }
@@ -65,6 +82,9 @@ int main( int argc, char *argv[] ) {
 	/* initialize */
 	if( init()!=EOK )
 		exit( EXIT_FAILURE );
+	snprintf( pid_path, sizeof pid_path, PIDFILE, getpid() );
+	if( lock_file(pid_path, &fpid, 1) == EOK )
+		save_pid( fpid );
 	
 	/* infinite loop */
 	pump();
@@ -72,5 +92,9 @@ int main( int argc, char *argv[] ) {
 	/* close all if loop aborted */
 	DEBUG( "Terminating" );
 	mq_close( mq );
+	if( fpid > 0 ) {
+		close( fpid );
+		unlink( pid_path );
+	}
 	exit( EXIT_SUCCESS );
 }
