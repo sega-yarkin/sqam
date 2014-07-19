@@ -18,3 +18,10 @@ if( curr.indexOf("log_raw") == -1 ) {
 	print( "\tCollection `log_raw' already exists" );
 }
 
+if( curr.indexOf("log_raw_param") == -1 ) {
+	db.createCollection( "log_raw_param" );
+	print( "\tCollection `log_raw_param' created" );
+} else {
+	print( "\tCollection `log_raw_param' already exists" );
+}
+

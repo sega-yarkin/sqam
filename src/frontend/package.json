@@ -1,6 +1,6 @@
 {
-	"name"		: "sqam_control",
-	"description"	: "SQAM Control process",
+	"name"		: "sqam_frontend",
+	"description"	: "SQAM Frontend",
 	"main"		: "./index.js",
 	"author"	: "Sergey I. Yarkin",
 	"version"	: "0.0.1",
@@ -12,8 +12,8 @@
 	],
 	"dependencies"	: {
 		"async": "latest",
+		"connect": "latest",
 		"mongodb": "latest",
-		"posix": "latest",
-		"daemon": "latest"
+		"mustache": "latest"
 	}
 }
